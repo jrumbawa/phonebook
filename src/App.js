@@ -43,10 +43,6 @@ const App = () => {
     setSearch(event.target.value)
   }
 
-  const filteredNames = persons.filter((person) =>
-    person.name.toLowerCase().includes(search)
-  )
-
   return (
     <div>
       <h2>Phonebook</h2>
@@ -60,7 +56,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons filteredNames={filteredNames} />
+      <Persons persons={persons} search={search} />
     </div>
   )
 }
