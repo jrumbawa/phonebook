@@ -1,4 +1,8 @@
-const Persons = ({ filteredNames }) => {
+const Persons = ({ persons, search }) => {
+  const filteredNames = persons.filter((person) =>
+    person.name.toLowerCase().includes(search)
+  )
+
   return (
     <>
       {filteredNames.map((person) => (
