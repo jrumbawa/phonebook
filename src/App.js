@@ -35,6 +35,14 @@ const App = () => {
     }
   }
 
+  const deletePerson = (id) => {
+    console.log(id)
+    axios.delete(`http://localhost:3001/persons/${id}`).then((res) => {
+      const remove = persons.filter((person) => id !== person.id)
+      setPersons(remove)
+    })
+  }
+
   const handleNameChange = (event) => {
     setNewName(event.target.value)
   }
@@ -60,7 +68,7 @@ const App = () => {
         handleNumberChange={handleNumberChange}
       />
       <h2>Numbers</h2>
-      <Persons persons={persons} search={search} />
+      <Persons persons={persons} search={search} handleDelete={deletePerson} />
     </div>
   )
 }
