@@ -37,11 +37,7 @@ const App = () => {
   }
 
   const deletePerson = (id) => {
-    console.log(id)
-    axios.delete(`http://localhost:3001/persons/${id}`).then((res) => {
-      const remove = persons.filter((person) => id !== person.id)
-      setPersons(remove)
-    })
+    personService.remove(id)
   }
 
   const handleNameChange = (event) => {
