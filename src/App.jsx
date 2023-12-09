@@ -1,34 +1,65 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react'
+import axios from 'axios'
+import PersonForm from './components/PersonForm'
+import PeopleList from './components/PeopleList'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [persons, setPersons] = useState([])
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
+  const [filter, setFilter] = useState('')
+
+  useEffect(() => {
+    axios.get('http://localhost:3001/persons')
+      .then(res => {
+        console.log(res.data)
+        setPersons(res.data)
+      })
+  }, [])
+
+  const handleNameChange = (event) => {
+    setNewName(event.target.value)
+  }
+
+  const handleNumberChange = (event) => {
+    setNewNumber(event.target.value)
+  }
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value)
+  }
+
+  const addPerson = (event) => {
+    event.preventDefault()
+    const newPerson = {
+      name: newName,
+      number: newNumber
+    }
+    
+    const names = persons.map(person => person.name)
+
+    if (names.includes(newPerson.name)) {
+      alert(`${newPerson.name} is already added to the phonebook`)
+    } else {
+      setPersons(persons.concat(newPerson))
+      setNewName('')
+      setNewNumber('')
+    }
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
+    <div>
+      <h2>Phonebook</h2>
+      filter shown with <input value={filter} onChange={handleFilterChange} />
+      <PersonForm 
+        addPerson={addPerson}
+        handleNameChange={handleNameChange}
+        handleNumberChange={handleNumberChange}
+        newName={newName}
+        newNumber={newNumber}
+      />
+      <PeopleList persons={persons} filter={filter} />
+    </div>
   )
 }
 
